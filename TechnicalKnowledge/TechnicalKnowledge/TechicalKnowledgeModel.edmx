@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TechnicalKnowledgeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome_cliente" Type="nchar" MaxLength="100" />
+          <Property Name="data_nascimento" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Filme">
+          <Key>
+            <PropertyRef Name="id_filme" />
+          </Key>
+          <Property Name="id_filme" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome_filme" Type="nchar" MaxLength="100" />
+          <Property Name="produtora" Type="nchar" MaxLength="50" />
+          <Property Name="indicacao" Type="int" />
+        </EntityType>
+        <EntityType Name="Locacao">
+          <Key>
+            <PropertyRef Name="id_locacao" />
+          </Key>
+          <Property Name="id_locacao" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_cliente" Type="int" />
+          <Property Name="id_filme" Type="int" />
+          <Property Name="devolucao" Type="datetime" />
+          <Property Name="estimativa_devolucao" Type="datetime" />
+          <Property Name="data_locacao" Type="datetime" />
+          <Property Name="observacao" Type="nchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_Locacao_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+          <End Role="Locacao" Type="Self.Locacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="Locacao">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locacao_Filme">
+          <End Role="Filme" Type="Self.Filme" Multiplicity="0..1" />
+          <End Role="Locacao" Type="Self.Locacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Filme">
+              <PropertyRef Name="id_filme" />
+            </Principal>
+            <Dependent Role="Locacao">
+              <PropertyRef Name="id_filme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TechnicalKnowledgeDBModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Filme" EntityType="Self.Filme" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locacao" EntityType="Self.Locacao" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Locacao_Clientes" Association="Self.FK_Locacao_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Locacao" EntitySet="Locacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locacao_Filme" Association="Self.FK_Locacao_Filme">
+            <End Role="Filme" EntitySet="Filme" />
+            <End Role="Locacao" EntitySet="Locacao" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TechnicalKnowledgeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome_cliente" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="data_nascimento" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Locacao" Relationship="TechnicalKnowledgeDBModel.FK_Locacao_Clientes" FromRole="Clientes" ToRole="Locacao" />
+        </EntityType>
+        <EntityType Name="Filme">
+          <Key>
+            <PropertyRef Name="id_filme" />
+          </Key>
+          <Property Name="id_filme" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome_filme" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="produtora" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="indicacao" Type="Int32" />
+          <NavigationProperty Name="Locacao" Relationship="TechnicalKnowledgeDBModel.FK_Locacao_Filme" FromRole="Filme" ToRole="Locacao" />
+        </EntityType>
+        <EntityContainer Name="TechnicalKnowledgeDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+          <EntitySet Name="Filme" EntityType="Self.Filme" />
+          <EntitySet Name="Locacao" EntityType="TechnicalKnowledgeDBModel.Locacao" />
+          <AssociationSet Name="FK_Locacao_Clientes" Association="TechnicalKnowledgeDBModel.FK_Locacao_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Locacao" EntitySet="Locacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locacao_Filme" Association="TechnicalKnowledgeDBModel.FK_Locacao_Filme">
+            <End Role="Filme" EntitySet="Filme" />
+            <End Role="Locacao" EntitySet="Locacao" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Locacao">
+          <Key>
+            <PropertyRef Name="id_locacao" />
+          </Key>
+          <Property Name="id_locacao" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_cliente" Type="Int32" />
+          <Property Name="id_filme" Type="Int32" />
+          <Property Name="devolucao" Type="DateTime" Precision="3" />
+          <Property Name="data_locacao" Type="DateTime" Precision="3" />
+          <Property Name="observacao" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Clientes" Relationship="TechnicalKnowledgeDBModel.FK_Locacao_Clientes" FromRole="Locacao" ToRole="Clientes" />
+          <NavigationProperty Name="Filme" Relationship="TechnicalKnowledgeDBModel.FK_Locacao_Filme" FromRole="Locacao" ToRole="Filme" />
+          <Property Name="estimativa_devolucao" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Locacao_Clientes">
+          <End Type="TechnicalKnowledgeDBModel.Clientes" Role="Clientes" Multiplicity="0..1" />
+          <End Type="TechnicalKnowledgeDBModel.Locacao" Role="Locacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="Locacao">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locacao_Filme">
+          <End Type="TechnicalKnowledgeDBModel.Filme" Role="Filme" Multiplicity="0..1" />
+          <End Type="TechnicalKnowledgeDBModel.Locacao" Role="Locacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Filme">
+              <PropertyRef Name="id_filme" />
+            </Principal>
+            <Dependent Role="Locacao">
+              <PropertyRef Name="id_filme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TechnicalKnowledgeDBModelStoreContainer" CdmEntityContainer="TechnicalKnowledgeDBEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="TechnicalKnowledgeDBModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="nome_cliente" ColumnName="nome_cliente" />
+                <ScalarProperty Name="data_nascimento" ColumnName="data_nascimento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Filme">
+            <EntityTypeMapping TypeName="TechnicalKnowledgeDBModel.Filme">
+              <MappingFragment StoreEntitySet="Filme">
+                <ScalarProperty Name="id_filme" ColumnName="id_filme" />
+                <ScalarProperty Name="nome_filme" ColumnName="nome_filme" />
+                <ScalarProperty Name="produtora" ColumnName="produtora" />
+                <ScalarProperty Name="indicacao" ColumnName="indicacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locacao">
+            <EntityTypeMapping TypeName="TechnicalKnowledgeDBModel.Locacao">
+              <MappingFragment StoreEntitySet="Locacao">
+                <ScalarProperty Name="estimativa_devolucao" ColumnName="estimativa_devolucao" />
+                <ScalarProperty Name="observacao" ColumnName="observacao" />
+                <ScalarProperty Name="data_locacao" ColumnName="data_locacao" />
+                <ScalarProperty Name="devolucao" ColumnName="devolucao" />
+                <ScalarProperty Name="id_filme" ColumnName="id_filme" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_locacao" ColumnName="id_locacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

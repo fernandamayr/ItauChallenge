@@ -58,10 +58,10 @@ namespace TechnicalKnowledge.Repository
             try
             {
                 var result = (TechnicalKnowledge.Models.Locacao)(from c in db.Filme
-                                                                 join t in db.Locacao
-                                                                 on c.id_filme equals t.id_filme
-                                                                 where c.nome_filme == nome_filme
-                                                                 select new TechnicalKnowledge.Models.Locacao { id_cliente = (int)t.id_cliente, id_filme = c.id_filme, devolucao = t.devolucao }
+                              join t in db.Locacao
+                              on c.id_filme equals t.id_filme
+                              where c.nome_filme == nome_filme
+                              select new TechnicalKnowledge.Models.Locacao { id_cliente = (int)t.id_cliente, id_filme = c.id_filme, devolucao = t.devolucao }
                           ).FirstOrDefault();
 
                 if (result != null)
@@ -165,10 +165,14 @@ namespace TechnicalKnowledge.Repository
             }
         }
 
-        public Clientes BuscarClientes(string nome_cliente) {
+        public Models.Clientes BuscarClientes(string nome_cliente) {
             try
             {
-                return db.Clientes.SingleOrDefault(b => b.nome_cliente == nome_cliente);
+                var result = (from c in db.Clientes
+                                        where c.nome_cliente == nome_cliente
+                                        select new Models.Clientes() { id_cliente = c.id_cliente }).FirstOrDefault();
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -176,11 +180,15 @@ namespace TechnicalKnowledge.Repository
                 throw ex;
             }
         }
-        public Filme BuscarFilmes(string nome_filme)
+        public Models.Filme BuscarFilmes(string nome_filme)
         {
             try
             {
-                return db.Filme.SingleOrDefault(b => b.nome_filme == nome_filme);
+                var result = (from c in db.Filme
+                             where c.nome_filme == nome_filme
+                             select new Models.Filme() { id_filme = c.id_filme }).FirstOrDefault();
+
+                return result;
             }
             catch (Exception ex)
             {
